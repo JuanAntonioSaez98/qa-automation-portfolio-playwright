@@ -1,0 +1,8 @@
+[
+  { "title": "leading and trailing spaces", "firstName": "  Lucas  ", "lastName": "  QA  ", "postalCode": " 28001 " },
+  { "title": "special characters", "firstName": "Zoë-Ñandú", "lastName": "O'Brien <b>", "postalCode": "28001" },
+  { "title": "very long values", "firstName": "A", "lastName": "B", "postalCode": "1", "repeat": 300 },
+  { "title": "HTML/script injection", "firstName": "<script>alert(1)</script>", "lastName": "QA", "postalCode": "28001" },
+  { "title": "SQL injection", "firstName": "' OR 1=1 --", "lastName": "QA", "postalCode": "28001" },
+  { "title": "non-numeric postal code", "firstName": "Lucas", "lastName": "QA", "postalCode": "ABCDE" }
+]

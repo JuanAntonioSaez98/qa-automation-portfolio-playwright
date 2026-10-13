@@ -8,7 +8,7 @@ UI and API test automation by **Juan Antonio Saez** — QA Engineer with 3 years
 
 📊 **Live Playwright report:** https://juanantoniosaez98.github.io/qa-automation-portfolio-playwright/
 
-**55 tests** (UI × Chromium + Firefox, plus API) across 6 spec files.
+**94 tests** (UI × Chromium + Firefox, plus API) across 9 spec files.
 
 ---
 
@@ -27,6 +27,8 @@ UI and API test automation by **Juan Antonio Saez** — QA Engineer with 3 years
 | Checkout | End-to-end purchase, total = subtotal + tax, mandatory field validation |
 | API — CRUD | Create, read, filter, full update (PUT), partial update (PATCH), delete |
 | API — Security | Updates/deletes without or with invalid token return 403, bad credentials |
+| Edge cases — UI | Special users (`problem_user`, `performance_glitch_user`), empty/full cart, unusual checkout data (spaces, special chars, long values, HTML/SQL injection) |
+| API — Edge cases | Malformed payloads, invalid IDs, negative price (known gaps documented with `test.fail`) |
 | API — Contract & performance | Response schema/types, response time threshold |
 
 See [`docs/TEST_STRATEGY.md`](docs/TEST_STRATEGY.md) for the test design rationale (how manual test cases were turned into automated ones).
@@ -37,8 +39,9 @@ See [`docs/TEST_STRATEGY.md`](docs/TEST_STRATEGY.md) for the test design rationa
 - **Stable locators** — `data-test` attributes instead of brittle XPath/CSS chains.
 - **No hard waits** — Playwright auto-waiting and web-first assertions, never fixed sleeps.
 - **Test isolation** — fresh browser context per test; API tests create their own data.
-- **Data-driven tests** — parametrised test loops.
-- **Tagging** — `@smoke`, `@regression`, `@api`, `@security` to run subsets.
+- **Data-driven tests** — parametrised test loops fed from JSON files in `src/data`.
+- **Known bugs tracked, not hidden** — tests for known application bugs use `test.fail`: green while the bug exists, red once it is fixed.
+- **Tagging** — `@smoke`, `@regression`, `@api`, `@security`, `@edge` to run subsets.
 - **Parallel execution** — `fullyParallel` workers, each test in its own isolated browser context.
 - **Failure evidence** — screenshots, videos and traces on failure.
 - **Configuration outside the code** — base URLs and credentials via env vars.
@@ -59,7 +62,7 @@ npm run test:headed      # watch the browser
 npm run report           # open the HTML report
 ```
 
-Config via env vars (all optional, defaults point to the public demo apps): `UI_BASE_URL`, `API_BASE_URL`, `SAUCE_PASSWORD`, `BOOKER_USER`, `BOOKER_PASSWORD`.
+Config via env vars or a git-ignored `.env` file (copy `.env.example`; all optional, defaults point to the public demo apps): `UI_BASE_URL`, `API_BASE_URL`, `SAUCE_PASSWORD`, `BOOKER_USER`, `BOOKER_PASSWORD`.
 
 ## Project structure
 

@@ -1,0 +1,48 @@
+[
+  {
+    "title": "missing firstname",
+    "remove": [
+      "firstname"
+    ]
+  },
+  {
+    "title": "missing bookingdates",
+    "remove": [
+      "bookingdates"
+    ]
+  },
+  {
+    "title": "empty body",
+    "remove": [
+      "firstname",
+      "lastname",
+      "totalprice",
+      "depositpaid",
+      "bookingdates"
+    ]
+  },
+  {
+    "title": "totalprice as string",
+    "override": {
+      "totalprice": "not-a-number"
+    },
+    "knownGap": true
+  },
+  {
+    "title": "depositpaid as string",
+    "override": {
+      "depositpaid": "maybe"
+    },
+    "knownGap": true
+  },
+  {
+    "title": "invalid checkin date",
+    "override": {
+      "bookingdates": {
+        "checkin": "not-a-date",
+        "checkout": "2026-10-05"
+      }
+    },
+    "knownGap": true
+  }
+]

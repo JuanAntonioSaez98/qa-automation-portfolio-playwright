@@ -66,4 +66,4 @@ Scenarios that are exploratory, change often or require human judgement (UX, loo
 
 ## 7. Known issues found
 
-SauceDemo intentionally ships buggy users (`problem_user`, `error_user`). Defects found are reported as GitHub Issues using the [bug report template](../.github/ISSUE_TEMPLATE/bug_report.md) (steps to reproduce, expected vs actual, severity/priority, evidence).
+SauceDemo intentionally ships buggy users (`problem_user`, `error_user`). `problem_user` and `performance_glitch_user` are covered in `tests/ui/special-users.spec.ts`; known bugs are asserted with `test.fail` so they stay visible and flip to red when fixed. Defects found are reported as GitHub Issues using the [bug report template](../.github/ISSUE_TEMPLATE/bug_report.md) (steps to reproduce, expected vs actual, severity/priority, evidence).

@@ -1,4 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
+import dotenv from 'dotenv';
+
+dotenv.config({ quiet: true });
 
 const UI_BASE_URL = process.env.UI_BASE_URL ?? 'https://www.saucedemo.com';
 const API_BASE_URL = process.env.API_BASE_URL ?? 'https://restful-booker.herokuapp.com';

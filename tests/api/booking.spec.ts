@@ -1,5 +1,6 @@
 import { test, expect, type APIRequestContext } from '@playwright/test';
-import { BookingClient, buildBooking } from '../../src/api/BookingClient';
+import { BookingClient, buildBooking, type Booking } from '../../src/api/BookingClient';
+import invalidPayloads from '../../src/data/booking-invalid-payloads.json';
 
 /**
  * CRUD tests against Restful-Booker.
@@ -106,5 +107,34 @@ test.describe('Booking API - negative & security', () => {
   test('GET a non-existing booking returns 404', { tag: ['@api'] }, async ({ request }) => {
     const res = await new BookingClient(request).get(999_999_999);
     expect(res.status()).toBe(404);
+  });
+});
+
+test.describe('Booking API - edge cases', () => {
+  for (const { title, remove, override, knownGap } of invalidPayloads) {
+    test(`POST /booking rejects payload with ${title}`, { tag: ['@api', '@edge'] }, async ({ request }) => {
+      test.fail(!!knownGap, 'Known API gap: Restful-Booker does not validate this field and answers 200');
+      const payload: Record<string, unknown> = { ...buildBooking(), ...override };
+      for (const key of remove ?? []) delete payload[key];
+
+      const res = await new BookingClient(request).create(payload as unknown as Booking);
+
+      // Restful-Booker answers 400/500 for malformed payloads; it must never create the booking (200).
+      expect(res.status()).toBeGreaterThanOrEqual(400);
+    });
+  }
+
+  for (const id of ['abc', '-1', '0', '99999999999']) {
+    test(`GET /booking/${id} does not return a booking`, { tag: ['@api', '@edge'] }, async ({ request }) => {
+      const res = await request.get(`/booking/${id}`);
+      expect(res.status()).toBe(404);
+    });
+  }
+
+  test('POST /booking with zero and negative totalprice', { tag: ['@api', '@edge'] }, async ({ request }) => {
+    test.fail(true, 'Known API gap: Restful-Booker accepts negative prices without validation');
+    const res = await new BookingClient(request).create(buildBooking({ totalprice: -50 }));
+
+    expect(res.status()).toBeGreaterThanOrEqual(400);
   });
 });
